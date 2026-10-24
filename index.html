@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Разработка цифровых продуктов | Telegram-боты, сайты, автоматизация</title>
+  <meta name="description" content="Премиальная разработка цифровых продуктов: Telegram-боты, WebApps (TWA), адаптивные веб-сайты и автоматизация в эстетике Lovable.">
+  <meta name="theme-color" content="#09090b">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            background: '#09090b',
+            surface: {
+              DEFAULT: '#121215',
+              hover: '#18181b',
+              subtle: '#1c1c21',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: #121215;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #09090b;
+      color: #ededed;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    ::selection {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+    /* Subtle dot grid typical in Lovable/Linear */
+    .bg-grid-subtle {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #09090b;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3f3f46;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#09090b] text-[#ededed]">
+
+  <!-- Background Gradients & Dot Grid -->
+  <div class="fixed inset-0 bg-grid-subtle pointer-events-none opacity-40 z-0"></div>
+  <div class="fixed top-[-10%] left-[20%] w-[500px] h-[500px] bg-white/[0.015] rounded-full blur-[120px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-[-10%] right-[10%] w-[600px] h-[600px] bg-white/[0.01] rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+  <div class="relative z-10 flex flex-col min-h-screen">
+    
+    <!-- HEADER -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-5">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+        <!-- Brand / Logo -->
+        <a href="#" onclick="sound.play(0.95)" class="flex items-center gap-3 group focus:outline-none rounded-lg p-1" aria-label="dev.core">
+          <div class="relative w-8 h-8 rounded-lg bg-zinc-900 border border-white/10 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:border-white/25 group-hover:bg-zinc-800/80">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4 text-zinc-200 transition-transform duration-300 group-hover:scale-110" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2" />
+              <polyline points="2 17 12 22 22 17" />
+              <polyline points="2 12 12 17 22 12" />
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-semibold tracking-tight text-zinc-100 flex items-center gap-1.5">
+              dev.core
+              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-white/[0.06] text-zinc-400 border border-white/[0.05]">pro</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-1 bg-zinc-950/60 p-1.5 rounded-full border border-white/[0.06] backdrop-blur-md">
+          <a href="#services" onclick="sound.play(1.05)" class="px-3.5 py-1.5 text-xs font-medium text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.05] rounded-full transition-all duration-200">Услуги</a>
+          <a href="#features" onclick="sound.play(1.05)" class="px-3.5 py-1.5 text-xs font-medium text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.05] rounded-full transition-all duration-200">Возможности</a>
+          <a href="#calculator" onclick="sound.play(1.05)" class="px-3.5 py-1.5 text-xs font-medium text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.05] rounded-full transition-all duration-200">Конфигуратор</a>
+          <a href="#contacts" onclick="sound.play(1.05)" class="px-3.5 py-1.5 text-xs font-medium text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.05] rounded-full transition-all duration-200">Контакты</a>
+        </nav>
+
+        <!-- Status & Actions -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Availability Badge -->
+          <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/[0.08] border border-emerald-500/20 text-xs font-medium text-emerald-400">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="text-[11px] font-medium tracking-wide">Доступен для заказов</span>
+          </div>
+
+          <!-- Sound Toggle (Web Audio API) -->
+          <button id="sound-btn" onclick="sound.toggle()" class="p-2 rounded-xl bg-zinc-900/80 border border-white/[0.08] text-zinc-400 hover:text-zinc-100 hover:border-white/20 transition-all active:scale-95" aria-label="Звук" title="Включить/выключить тактильный звук">
+            <!-- Icon Volume On -->
+            <svg id="icon-vol-on" class="w-4 h-4 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <!-- Icon Volume Off (hidden by default) -->
+            <svg id="icon-vol-off" class="w-4 h-4 text-zinc-500 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+              <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>
+              <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+          </button>
+
+          <!-- Contact Button -->
+          <a href="https://t.me/AimBoGAttack" target="_blank" rel="noopener noreferrer" onclick="sound.play(1.1)" class="hidden xs:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-zinc-100 text-zinc-950 hover:bg-white text-xs font-semibold tracking-tight transition-all active:scale-95 shadow-sm">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            <span>Связаться</span>
+          </a>
+
+          <!-- Mobile Menu Toggle -->
+          <button onclick="toggleMobileMenu()" class="p-2 rounded-xl bg-zinc-900/80 border border-white/[0.08] text-zinc-400 hover:text-zinc-100 md:hidden" aria-label="Меню">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Dropdown -->
+      <div id="mobile-menu" class="hidden md:hidden mt-3 px-4 pb-4 pt-2 border-b border-white/[0.08] bg-[#09090b]/95 backdrop-blur-2xl">
+        <div class="flex flex-col gap-1.5">
+          <a href="#services" onclick="toggleMobileMenu(); sound.play(1.05);" class="px-3 py-2 rounded-lg text-sm text-zinc-300 hover:text-white hover:bg-white/[0.05]">Услуги</a>
+          <a href="#features" onclick="toggleMobileMenu(); sound.play(1.05);" class="px-3 py-2 rounded-lg text-sm text-zinc-300 hover:text-white hover:bg-white/[0.05]">Возможности</a>
+          <a href="#calculator" onclick="toggleMobileMenu(); sound.play(1.05);" class="px-3 py-2 rounded-lg text-sm text-zinc-300 hover:text-white hover:bg-white/[0.05]">Конфигуратор</a>
+          <a href="#contacts" onclick="toggleMobileMenu(); sound.play(1.05);" class="px-3 py-2 rounded-lg text-sm text-zinc-300 hover:text-white hover:bg-white/[0.05]">Контакты</a>
+          <a href="https://t.me/AimBoGAttack" target="_blank" rel="noopener noreferrer" class="mt-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white text-zinc-950 font-semibold text-xs">
+            <span>Написать в Telegram</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO SECTION (Lovable style) -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-b from-white/[0.03] to-transparent rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+        <!-- Tag -->
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900/90 border border-white/[0.08] text-[11px] font-mono text-zinc-400 mb-6 backdrop-blur-md">
+          <svg class="w-3.5 h-3.5 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+          </svg>
+          <span>Lovable Architecture • Telegram & Web Ecosystem</span>
+        </div>
+
+        <!-- Hero Title -->
+        <h1 class="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-[#ededed] max-w-3xl mx-auto leading-[1.12]">
+          Разработка цифровых решений с вниманием к каждой детали
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="mt-5 text-base sm:text-lg text-[#a1a1aa] max-w-2xl mx-auto font-normal leading-relaxed">
+          Создание продуманных Telegram-ботов, сайтов и скриптов автоматизации. 
+          Чистый код, высокая скорость работы и безупречная эргономика.
+        </p>
+
+        <!-- Lovable-style Interactive Prompt Bar -->
+        <div class="mt-10 max-w-2xl mx-auto">
+          <form onsubmit="handlePromptSubmit(event)" class="relative flex items-center rounded-2xl bg-zinc-900/90 border border-white/[0.1] p-2 shadow-2xl shadow-black/80 backdrop-blur-2xl transition-all duration-300 focus-within:border-white/30 group">
+            <input
+              id="hero-prompt-input"
+              type="text"
+              placeholder="Опишите задачу или выберите готовое решение..."
+              class="w-full bg-transparent px-4 py-3 text-sm sm:text-base text-zinc-100 placeholder:text-zinc-500 focus:outline-none"
+            >
+            <button
+              type="submit"
+              onclick="sound.play(1.15)"
+              class="shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 transition-all duration-200 active:scale-95 shadow-sm"
+              aria-label="Перейти в конфигуратор"
+              title="Перейти в конфигуратор"
+            >
+              <svg class="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </form>
+
+          <!-- Quick Suggestion Tags -->
+          <div class="mt-3.5 flex flex-wrap items-center justify-center gap-2">
+            <span class="text-xs text-zinc-500 font-mono hidden sm:inline mr-1">Быстрый старт:</span>
+            <button type="button" onclick="selectQuickTag('bot', 'Telegram-бот для продаж')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-zinc-900/60 border border-white/[0.06] text-xs text-zinc-400 hover:text-zinc-200 hover:border-white/20 hover:bg-zinc-800/60 transition-all active:scale-95">
+              <span>Telegram-бот для продаж</span>
+            </button>
+            <button type="button" onclick="selectQuickTag('web', 'Сайт-витрина')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-zinc-900/60 border border-white/[0.06] text-xs text-zinc-400 hover:text-zinc-200 hover:border-white/20 hover:bg-zinc-800/60 transition-all active:scale-95">
+              <span>Сайт-витрина</span>
+            </button>
+            <button type="button" onclick="selectQuickTag('miniapp', 'Telegram Mini App')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-zinc-900/60 border border-white/[0.06] text-xs text-zinc-400 hover:text-zinc-200 hover:border-white/20 hover:bg-zinc-800/60 transition-all active:scale-95">
+              <span>Mini App</span>
+            </button>
+            <button type="button" onclick="selectQuickTag('automation', 'Парсер данных')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-zinc-900/60 border border-white/[0.06] text-xs text-zinc-400 hover:text-zinc-200 hover:border-white/20 hover:bg-zinc-800/60 transition-all active:scale-95">
+              <span>Парсер данных</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Telemetry Cards (Bklit-style) -->
+        <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto text-left">
+          <div class="p-4 sm:p-5 rounded-2xl bg-zinc-950/60 border border-white/[0.06] backdrop-blur-md hover:border-white/12 transition-all">
+            <div class="flex items-center gap-2 text-zinc-400 mb-2">
+              <svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span class="text-xs font-mono uppercase tracking-wider text-zinc-400">Отклик</span>
+            </div>
+            <div class="text-xl sm:text-2xl font-bold font-mono text-zinc-100">&lt; 15 мин</div>
+            <div class="text-[12px] text-zinc-400 mt-1">Первичный ответ в Telegram</div>
+          </div>
+
+          <div class="p-4 sm:p-5 rounded-2xl bg-zinc-950/60 border border-white/[0.06] backdrop-blur-md hover:border-white/12 transition-all">
+            <div class="flex items-center gap-2 text-zinc-400 mb-2">
+              <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <span class="text-xs font-mono uppercase tracking-wider text-zinc-400">Аптайм</span>
+            </div>
+            <div class="text-xl sm:text-2xl font-bold font-mono text-zinc-100">99.9%</div>
+            <div class="text-[12px] text-zinc-400 mt-1">Серверные боты и парсеры</div>
+          </div>
+
+          <div class="p-4 sm:p-5 rounded-2xl bg-zinc-950/60 border border-white/[0.06] backdrop-blur-md hover:border-white/12 transition-all">
+            <div class="flex items-center gap-2 text-zinc-400 mb-2">
+              <svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span class="text-xs font-mono uppercase tracking-wider text-zinc-400">Дедлайн</span>
+            </div>
+            <div class="text-xl sm:text-2xl font-bold font-mono text-zinc-100">100%</div>
+            <div class="text-[12px] text-zinc-400 mt-1">Фиксированные сроки работ</div>
+          </div>
+
+          <div class="p-4 sm:p-5 rounded-2xl bg-zinc-950/60 border border-white/[0.06] backdrop-blur-md hover:border-white/12 transition-all">
+            <div class="flex items-center gap-2 text-zinc-400 mb-2">
+              <svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              <span class="text-xs font-mono uppercase tracking-wider text-zinc-400">Подход</span>
+            </div>
+            <div class="text-xl sm:text-2xl font-bold font-mono text-zinc-100">Full-cycle</div>
+            <div class="text-[12px] text-zinc-400 mt-1">Архитектура, код и деплой</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENTO GRID (Services & Capabilities) -->
+    <section id="services" class="py-20 md:py-28 relative scroll-mt-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="max-w-2xl mb-12 sm:mb-16">
+          <div class="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">Архитектура & Компетенции</div>
+          <h2 class="text-2xl sm:text-4xl font-semibold tracking-tight text-zinc-100">Специализированные направления разработки</h2>
+          <p class="mt-3 text-sm sm:text-base text-zinc-400">
+            От быстрых высоконагруженных Telegram-ботов до комплексных веб-платформ с продуманной бизнес-логикой и интеграциями.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6">
+          
+          <!-- Bento 1: Telegram Bots (Span 7) -->
+          <div class="bento-card md:col-span-7 relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#121215]/80 p-6 sm:p-8 backdrop-blur-xl transition-all duration-300 hover:border-white/[0.18] group">
+            <div class="spotlight pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+            <div class="relative z-10 flex flex-col h-full justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-5">
+                  <div class="inline-flex items-center justify-center rounded-xl bg-zinc-900 border border-white/[0.08] p-3 text-zinc-100 group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5 text-zinc-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 17v-2"></path><path d="M15 17v-2"></path><path d="M9 9h.01"></path><path d="M15 9h.01"></path>
+                    </svg>
+                  </div>
+                  <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-white/[0.04] text-zinc-400 border border-white/[0.06]">Flagship</span>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100 group-hover:text-white transition-colors">Telegram-боты & Mini Apps</h3>
+                <p class="mt-2 text-sm text-zinc-400 leading-relaxed font-normal">
+                  Создание ботов любой сложности: от воронок продаж и витрин до полноценных web-приложений (TWA) внутри Telegram.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-6">
+                  <div class="flex items-start gap-2 p-2.5 rounded-xl bg-zinc-900/60 border border-white/[0.04]">
+                    <div class="text-xs">
+                      <div class="font-medium text-zinc-200">Приём платежей</div>
+                      <div class="text-zinc-400 text-[11px]">ЮKassa, Cryptomus, Stars</div>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-2 p-2.5 rounded-xl bg-zinc-900/60 border border-white/[0.04]">
+                    <div class="text-xs">
+                      <div class="font-medium text-zinc-200">AI / LLM интеллект</div>
+                      <div class="text-zinc-400 text-[11px]">Умные ассистенты (GPT/Claude)</div>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-2 p-2.5 rounded-xl bg-zinc-900/60 border border-white/[0.04]">
+                    <div class="text-xs">
+                      <div class="font-medium text-zinc-200">Telegram Mini Apps</div>
+                      <div class="text-zinc-400 text-[11px]">Интерфейсы приложений внутри мессенджера</div>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-2 p-2.5 rounded-xl bg-zinc-900/60 border border-white/[0.04]">
+                    <div class="text-xs">
+                      <div class="font-medium text-zinc-200">Синхронизация с CRM</div>
+                      <div class="text-zinc-400 text-[11px]">AmoCRM, Bitrix, Google Таблицы</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-8 pt-4 border-t border-white/[0.05]">
+                <button type="button" onclick="selectQuickTag('bot', 'Разработка Telegram-бота')" class="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                  <span>Собрать в конфигураторе</span>
+                  <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bento 2: Web & Landing (Span 5) -->
+          <div class="bento-card md:col-span-5 relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#121215]/80 p-6 sm:p-8 backdrop-blur-xl transition-all duration-300 hover:border-white/[0.18] group">
+            <div class="spotlight pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+            <div class="relative z-10 flex flex-col h-full justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-5">
+                  <div class="inline-flex items-center justify-center rounded-xl bg-zinc-900 border border-white/[0.08] p-3 text-zinc-100 group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5 text-zinc-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                  </div>
+                  <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-white/[0.04] text-zinc-400 border border-white/[0.06]">Speed</span>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100 group-hover:text-white transition-colors">Веб-сайты и витрины</h3>
+                <p class="mt-2 text-sm text-zinc-400 leading-relaxed font-normal">
+                  Премиальные веб-интерфейсы в эстетике Lovable/Linear: бескомпромиссная скорость, адаптивность и чистый дизайн.
+                </p>
+
+                <div class="space-y-2.5 mt-6 text-xs text-zinc-300">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Next.js 14+ / React с серверным рендерингом (SSR)</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Мягкие пружинные анимации без лагов (Motion)</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Оптимизация для мобильных устройств и Telegram Web</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>WCAG AAA контрастность и эргономика типографики</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-8 pt-4 border-t border-white/[0.05]">
+                <button type="button" onclick="selectQuickTag('web', 'Разработка веб-сайта')" class="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                  <span>Собрать в конфигураторе</span>
+                  <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bento 3: Automation & Parsers (Span 5) -->
+          <div class="bento-card md:col-span-5 relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#121215]/80 p-6 sm:p-8 backdrop-blur-xl transition-all duration-300 hover:border-white/[0.18] group">
+            <div class="spotlight pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+            <div class="relative z-10 flex flex-col h-full justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-5">
+                  <div class="inline-flex items-center justify-center rounded-xl bg-zinc-900 border border-white/[0.08] p-3 text-zinc-100 group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5 text-zinc-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                  </div>
+                  <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-white/[0.04] text-zinc-400 border border-white/[0.06]">Data & Sync</span>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100 group-hover:text-white transition-colors">Автоматизация & Парсинг</h3>
+                <p class="mt-2 text-sm text-zinc-400 leading-relaxed font-normal">
+                  Скрипты сбора данных, мониторинг цен, агрегаторы каналов и автоматическое уведомление о событиях.
+                </p>
+
+                <div class="space-y-2.5 mt-6 text-xs text-zinc-300">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Парсинг маркетплейсов, бирж и каталогов</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Анти-детект, обход Cloudflare и капчи, прокси</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Авто-экспорт в Google Sheets, PostgreSQL, CRM</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Алерты в Telegram при изменении цен или данных</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-8 pt-4 border-t border-white/[0.05]">
+                <button type="button" onclick="selectQuickTag('automation', 'Парсинг и автоматизация')" class="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                  <span>Собрать в конфигураторе</span>
+                  <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bento 4: Full-cycle (Span 7) -->
+          <div class="bento-card md:col-span-7 relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#121215]/80 p-6 sm:p-8 backdrop-blur-xl transition-all duration-300 hover:border-white/[0.18] group">
+            <div class="spotlight pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+            <div class="relative z-10 flex flex-col h-full justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-5">
+                  <div class="inline-flex items-center justify-center rounded-xl bg-zinc-900 border border-white/[0.08] p-3 text-zinc-100 group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5 text-zinc-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                  </div>
+                  <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-white/[0.04] text-zinc-400 border border-white/[0.06]">Full-Cycle</span>
+                </div>
+                <h3 class="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100 group-hover:text-white transition-colors">Инженерия под ключ & Деплой</h3>
+                <p class="mt-2 text-sm text-zinc-400 leading-relaxed font-normal">
+                  Полный цикл от первого наброска архитектуры до изолированного развертывания на защищенных VPS серверах.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-6">
+                  <div class="p-3 rounded-xl bg-zinc-900/60 border border-white/[0.04]">
+                    <div class="text-xs font-semibold text-zinc-200">Архитектура</div>
+                    <div class="text-[11px] text-zinc-400 mt-1">Модульная структура, строгий TypeScript, чистота кода.</div>
+                  </div>
+                  <div class="p-3 rounded-xl bg-zinc-900/60 border border-white/[0.04]">
+                    <div class="text-xs font-semibold text-zinc-200">Деплой & Docker</div>
+                    <div class="text-[11px] text-zinc-400 mt-1">Контейнеризация, Nginx, SSL сертификаты, systemd.</div>
+                  </div>
+                  <div class="p-3 rounded-xl bg-zinc-900/60 border border-white/[0.04]">
+                    <div class="text-xs font-semibold text-zinc-200">Поддержка</div>
+                    <div class="text-[11px] text-zinc-400 mt-1">Автоматические бэкапы, мониторинг сбоев 24/7.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-8 pt-4 border-t border-white/[0.05]">
+                <button type="button" onclick="selectQuickTag('turnkey', 'Проект под ключ')" class="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-400 group-hover:text-zinc-200 transition-colors">
+                  <span>Собрать в конфигураторе</span>
+                  <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFIGURATOR SECTION -->
+    <section id="calculator" class="py-20 md:py-28 relative scroll-mt-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="max-w-2xl mb-12 sm:mb-16">
+          <div class="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">Интерактивный конструктор</div>
+          <h2 class="text-2xl sm:text-4xl font-semibold tracking-tight text-zinc-100">Соберите проект и рассчитайте параметры</h2>
+          <p class="mt-3 text-sm sm:text-base text-zinc-400">
+            Выберите направление, необходимые модули и опишите задачу. Готовая спецификация сформируется автоматически для обсуждения в Telegram.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Left Controls (Span 7) -->
+          <div class="lg:col-span-7 space-y-8">
+            <!-- Step 1: Direction -->
+            <div>
+              <div class="flex items-center justify-between mb-3.5">
+                <label class="text-sm font-medium text-zinc-200 flex items-center gap-2">
+                  <span class="w-5 h-5 rounded-full bg-white/[0.08] text-[11px] font-mono flex items-center justify-center text-zinc-300">1</span>
+                  <span>Направление проекта</span>
+                </label>
+                <span class="text-xs text-zinc-400 font-mono">Выберите 1 вариант</span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="type-buttons-container">
+                <!-- Dynamically bound by JS -->
+                <button type="button" onclick="setType('bot')" id="btn-type-bot" class="type-btn active flex items-start gap-3 p-4 rounded-xl border text-left transition-all active:scale-[0.98] bg-zinc-900 border-white/30 shadow-lg ring-1 ring-white/20">
+                  <div class="p-2 rounded-lg border shrink-0 bg-white text-zinc-950 border-white">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 17v-2"></path><path d="M15 17v-2"></path></svg>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold tracking-tight text-white">Telegram-бот</div>
+                    <div class="text-xs text-zinc-400 mt-0.5">Автоматизация, воронки, продажи</div>
+                  </div>
+                </button>
+
+                <button type="button" onclick="setType('web')" id="btn-type-web" class="type-btn flex items-start gap-3 p-4 rounded-xl border text-left transition-all active:scale-[0.98] bg-zinc-950/60 border-white/[0.06] hover:border-white/15 hover:bg-zinc-900/50">
+                  <div class="p-2 rounded-lg border shrink-0 bg-zinc-900 text-zinc-400 border-white/[0.08]">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold tracking-tight text-zinc-200">Веб-сайт / Лендинг</div>
+                    <div class="text-xs text-zinc-400 mt-0.5">Быстрый сайт в стиле Lovable</div>
+                  </div>
+                </button>
+
+                <button type="button" onclick="setType('miniapp')" id="btn-type-miniapp" class="type-btn flex items-start gap-3 p-4 rounded-xl border text-left transition-all active:scale-[0.98] bg-zinc-950/60 border-white/[0.06] hover:border-white/15 hover:bg-zinc-900/50">
+                  <div class="p-2 rounded-lg border shrink-0 bg-zinc-900 text-zinc-400 border-white/[0.08]">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold tracking-tight text-zinc-200">Telegram Mini App</div>
+                    <div class="text-xs text-zinc-400 mt-0.5">Полноценный WebApp в Telegram</div>
+                  </div>
+                </button>
+
+                <button type="button" onclick="setType('automation')" id="btn-type-automation" class="type-btn flex items-start gap-3 p-4 rounded-xl border text-left transition-all active:scale-[0.98] bg-zinc-950/60 border-white/[0.06] hover:border-white/15 hover:bg-zinc-900/50">
+                  <div class="p-2 rounded-lg border shrink-0 bg-zinc-900 text-zinc-400 border-white/[0.08]">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold tracking-tight text-zinc-200">Парсер / Скрипт</div>
+                    <div class="text-xs text-zinc-400 mt-0.5">Сбор данных, боты-чекеры</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2: Modules -->
+            <div>
+              <div class="flex items-center justify-between mb-3.5">
+                <label class="text-sm font-medium text-zinc-200 flex items-center gap-2">
+                  <span class="w-5 h-5 rounded-full bg-white/[0.08] text-[11px] font-mono flex items-center justify-center text-zinc-300">2</span>
+                  <span>Необходимые модули & интеграции</span>
+                </label>
+                <span class="text-xs text-zinc-400 font-mono">Множественный выбор</span>
+              </div>
+
+              <div class="space-y-2.5">
+                <div onclick="toggleModule('payments')" id="mod-payments" class="module-item active flex items-center justify-between p-3.5 rounded-xl border cursor-pointer select-none transition-all duration-200 bg-zinc-900/90 border-white/20">
+                  <div class="flex items-center gap-3">
+                    <div class="mod-checkbox w-5 h-5 rounded-md flex items-center justify-center border bg-white border-white text-zinc-950">
+                      <svg class="w-3.5 h-3.5 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div>
+                      <div class="text-sm font-medium text-zinc-200">Приём платежей</div>
+                      <div class="text-xs text-zinc-400">ЮKassa, Cryptomus, Stars, СБП</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div onclick="toggleModule('admin')" id="mod-admin" class="module-item flex items-center justify-between p-3.5 rounded-xl border cursor-pointer select-none transition-all duration-200 bg-zinc-950/50 border-white/[0.05] hover:border-white/10">
+                  <div class="flex items-center gap-3">
+                    <div class="mod-checkbox w-5 h-5 rounded-md flex items-center justify-center border border-white/20 bg-zinc-900"></div>
+                    <div>
+                      <div class="text-sm font-medium text-zinc-200">Панель управления (Админка)</div>
+                      <div class="text-xs text-zinc-400">Удобный интерфейс для управления контентом и клиентами</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div onclick="toggleModule('database')" id="mod-database" class="module-item active flex items-center justify-between p-3.5 rounded-xl border cursor-pointer select-none transition-all duration-200 bg-zinc-900/90 border-white/20">
+                  <div class="flex items-center gap-3">
+                    <div class="mod-checkbox w-5 h-5 rounded-md flex items-center justify-center border bg-white border-white text-zinc-950">
+                      <svg class="w-3.5 h-3.5 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div>
+                      <div class="text-sm font-medium text-zinc-200">База данных / CRM</div>
+                      <div class="text-xs text-zinc-400">PostgreSQL, Redis, AmoCRM, Google Таблицы</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div onclick="toggleModule('ai')" id="mod-ai" class="module-item flex items-center justify-between p-3.5 rounded-xl border cursor-pointer select-none transition-all duration-200 bg-zinc-950/50 border-white/[0.05] hover:border-white/10">
+                  <div class="flex items-center gap-3">
+                    <div class="mod-checkbox w-5 h-5 rounded-md flex items-center justify-center border border-white/20 bg-zinc-900"></div>
+                    <div>
+                      <div class="text-sm font-medium text-zinc-200">AI / LLM интеграция</div>
+                      <div class="text-xs text-zinc-400">Умные автоответы и чат-ассистенты (GPT / Claude)</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div onclick="toggleModule('urgent')" id="mod-urgent" class="module-item flex items-center justify-between p-3.5 rounded-xl border cursor-pointer select-none transition-all duration-200 bg-zinc-950/50 border-white/[0.05] hover:border-white/10">
+                  <div class="flex items-center gap-3">
+                    <div class="mod-checkbox w-5 h-5 rounded-md flex items-center justify-center border border-white/20 bg-zinc-900"></div>
+                    <div>
+                      <div class="text-sm font-medium text-zinc-200">Срочный дедлайн</div>
+                      <div class="text-xs text-zinc-400">Приоритетная разработка за 3-5 рабочих дней</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Textarea + Honeypot -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-medium text-zinc-200 flex items-center gap-2">
+                  <span class="w-5 h-5 rounded-full bg-white/[0.08] text-[11px] font-mono flex items-center justify-center text-zinc-300">3</span>
+                  <span>Детали задачи или пожелания</span>
+                </label>
+                <span class="text-xs text-zinc-400 font-mono">Необязательно</span>
+              </div>
+
+              <!-- Honeypot -->
+              <input type="text" id="hp-token" name="user_verification_token" tabindex="-1" autocomplete="off" class="opacity-0 absolute -left-[9999px] h-0">
+
+              <textarea
+                id="cfg-details"
+                rows="3"
+                oninput="updateSummary()"
+                placeholder="Например: нужен бот для приёма платежей за подписку на закрытый канал с автовыдачей доступа..."
+                class="w-full rounded-xl bg-zinc-950/80 border border-white/[0.08] p-3.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-white/25 focus:ring-1 focus:ring-white/20 transition-all resize-none"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Summary & Direct Telegram Action (Span 5) -->
+          <div class="lg:col-span-5 sticky top-28">
+            <div class="rounded-2xl border border-white/[0.08] bg-[#121215] p-6 sm:p-7 backdrop-blur-xl shadow-2xl shadow-black/80">
+              <div class="flex items-center justify-between pb-4 border-b border-white/[0.06]">
+                <div class="text-sm font-semibold tracking-tight text-zinc-200">Спецификация заявки</div>
+                <button type="button" onclick="resetConfigurator()" class="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-200 transition-colors" title="Сбросить все поля">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                  <span>Сброс</span>
+                </button>
+              </div>
+
+              <!-- Summary Items -->
+              <div class="space-y-4 py-5 text-xs">
+                <div>
+                  <div class="text-zinc-400 font-mono uppercase tracking-wider mb-1">Направление:</div>
+                  <div class="text-sm font-medium text-white flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                    <span id="sum-type">Telegram-бот</span>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-zinc-400 font-mono uppercase tracking-wider mb-1">Выбранные модули:</div>
+                  <div id="sum-modules" class="text-zinc-200 leading-relaxed">Приём платежей, База данных / CRM</div>
+                </div>
+
+                <div id="sum-details-block" class="hidden">
+                  <div class="text-zinc-400 font-mono uppercase tracking-wider mb-1">Детали задачи:</div>
+                  <div id="sum-details" class="text-zinc-300 italic bg-zinc-900/60 p-2.5 rounded-lg border border-white/[0.04]"></div>
+                </div>
+
+                <div class="pt-2 border-t border-white/[0.05]">
+                  <div class="flex items-center justify-between text-zinc-400 mb-1">
+                    <span>Срок оценки и ответа:</span>
+                    <span class="font-mono text-zinc-200">до 15 минут</span>
+                  </div>
+                  <div class="flex items-center justify-between text-zinc-400">
+                    <span>Старт разработки:</span>
+                    <span class="font-mono text-emerald-400">в день согласования</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="space-y-2.5 pt-2">
+                <a
+                  id="tg-action-btn"
+                  href="https://t.me/AimBoGAttack"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onclick="handleTelegramSend(event)"
+                  class="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 font-semibold text-sm tracking-tight transition-all duration-200 active:scale-95 shadow-lg shadow-white/5"
+                >
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                  <span>Обсудить проект в Telegram</span>
+                </a>
+
+                <button
+                  type="button"
+                  id="copy-template-btn"
+                  onclick="copyMessageTemplate()"
+                  class="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-zinc-900/80 border border-white/[0.08] text-xs font-medium text-zinc-300 hover:text-white hover:border-white/20 transition-all active:scale-95"
+                >
+                  <svg id="copy-btn-icon" class="w-3.5 h-3.5 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                  <span id="copy-btn-text">Скопировать шаблон сообщения</span>
+                </button>
+              </div>
+
+              <div class="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-zinc-400">
+                <svg class="w-3.5 h-3.5 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Прямая связь с разработчиком без посредников</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTS SECTION -->
+    <section id="contacts" class="py-20 md:py-28 relative scroll-mt-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="max-w-2xl mb-12 sm:mb-16">
+          <div class="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">Прямой контакт</div>
+          <h2 class="text-2xl sm:text-4xl font-semibold tracking-tight text-zinc-100">Свяжитесь удобным для вас способом</h2>
+          <p class="mt-3 text-sm sm:text-base text-zinc-400">
+            Всегда на связи для обсуждения новых задач, консультаций по архитектуре или быстрого расчёта сроков реализации.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+          
+          <!-- Card 1: Telegram Direct -->
+          <div class="rounded-2xl border border-white/[0.08] bg-[#121215]/80 p-6 sm:p-7 backdrop-blur-xl flex flex-col justify-between hover:border-white/20 transition-all duration-300 group">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <div class="p-3 rounded-xl bg-zinc-900 border border-white/[0.08] text-zinc-200 group-hover:scale-105 transition-transform">
+                  <svg class="w-5 h-5 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </div>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Online</span>
+              </div>
+              <h3 class="text-lg font-semibold text-zinc-100">Telegram (Личные сообщения)</h3>
+              <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">Основной канал для оперативного обсуждения проектов, ТЗ и созвонов.</p>
+              <div class="mt-4 font-mono text-sm text-zinc-200">@AimBoGAttack</div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/[0.05]">
+              <a href="https://t.me/AimBoGAttack" target="_blank" rel="noopener noreferrer" onclick="sound.play(1.1)" class="inline-flex items-center justify-between w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-white/[0.08] text-xs font-semibold text-zinc-200 hover:text-white hover:bg-zinc-800 transition-all">
+                <span>Написать в Telegram</span>
+                <svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 2: Telegram Channel -->
+          <div class="rounded-2xl border border-white/[0.08] bg-[#121215]/80 p-6 sm:p-7 backdrop-blur-xl flex flex-col justify-between hover:border-white/20 transition-all duration-300 group">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <div class="p-3 rounded-xl bg-zinc-900 border border-white/[0.08] text-zinc-200 group-hover:scale-105 transition-transform">
+                  <svg class="w-5 h-5 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"></path><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"></path><circle cx="12" cy="12" r="2"></circle><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"></path><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"></path></svg>
+                </div>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-white/[0.04] text-zinc-400 border border-white/[0.06]">Блог & Кейсы</span>
+              </div>
+              <h3 class="text-lg font-semibold text-zinc-100">Telegram-канал</h3>
+              <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">Публикации о новых разработках, архитектурных решениях и релизах.</p>
+              <div class="mt-4 font-mono text-sm text-zinc-200">@qwstur</div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/[0.05]">
+              <a href="https://t.me/qwstur" target="_blank" rel="noopener noreferrer" onclick="sound.play(1.1)" class="inline-flex items-center justify-between w-full px-4 py-2.5 rounded-xl bg-zinc-900 border border-white/[0.08] text-xs font-semibold text-zinc-200 hover:text-white hover:bg-zinc-800 transition-all">
+                <span>Перейти в канал</span>
+                <svg class="w-4 h-4 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 3: Phone Direct -->
+          <div class="rounded-2xl border border-white/[0.08] bg-[#121215]/80 p-6 sm:p-7 backdrop-blur-xl flex flex-col justify-between hover:border-white/20 transition-all duration-300 group">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <div class="p-3 rounded-xl bg-zinc-900 border border-white/[0.08] text-zinc-200 group-hover:scale-105 transition-transform">
+                  <svg class="w-5 h-5 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                </div>
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-white/[0.04] text-zinc-400 border border-white/[0.06]">Прямой звонок</span>
+              </div>
+              <h3 class="text-lg font-semibold text-zinc-100">Телефонная связь</h3>
+              <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">Для срочных вопросов и голосовых консультаций в рабочие часы.</p>
+              <div class="mt-4 font-mono text-sm text-zinc-100">
+                <a href="tel:+79529089836" onclick="sound.play(1.05)" class="hover:underline underline-offset-4">+7 (952) 908-98-36</a>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/[0.05] flex gap-2">
+              <a href="tel:+79529089836" onclick="sound.play(1.1)" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-zinc-900 border border-white/[0.08] text-xs font-semibold text-zinc-200 hover:text-white hover:bg-zinc-800 transition-all">
+                <svg class="w-3.5 h-3.5 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span>Позвонить</span>
+              </a>
+
+              <button
+                type="button"
+                id="copy-phone-btn"
+                onclick="copyPhoneNumber()"
+                class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-zinc-900 border border-white/[0.08] text-xs font-semibold text-zinc-300 hover:text-white hover:border-white/20 hover:bg-zinc-800 transition-all active:scale-95"
+              >
+                <svg id="copy-phone-icon" class="w-3.5 h-3.5 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                <span id="copy-phone-text">Копировать</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/[0.06] bg-[#09090b] py-12 text-xs text-zinc-500">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div class="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+              <span class="font-mono text-zinc-300">dev.core // online</span>
+            </div>
+            <span class="hidden sm:inline text-zinc-700">•</span>
+            <span>Дизайн-код в эстетике Lovable, Linear & Vercel</span>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-2 font-mono text-[11px] text-zinc-400">
+            <span class="px-2 py-0.5 rounded bg-zinc-900 border border-white/[0.05]">HTML5</span>
+            <span class="px-2 py-0.5 rounded bg-zinc-900 border border-white/[0.05]">Tailwind</span>
+            <span class="px-2 py-0.5 rounded bg-zinc-900 border border-white/[0.05]">Web Audio API</span>
+          </div>
+
+          <button onclick="window.scrollTo({top: 0, behavior: 'smooth'}); sound.play(1.2);" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-white/[0.08] text-zinc-400 hover:text-zinc-200 hover:border-white/20 transition-all active:scale-95" aria-label="Наверх">
+            <span>Наверх</span>
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+          </button>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-3 text-zinc-600 text-[11px]">
+          <div>© 2026 dev.core. Все права защищены.</div>
+          <div class="flex items-center gap-4">
+            <a href="https://t.me/AimBoGAttack" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-400">@AimBoGAttack</a>
+            <a href="https://t.me/qwstur" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-400">@qwstur</a>
+            <a href="tel:+79529089836" class="hover:text-zinc-400">+7 (952) 908-98-36</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- CLIENT SCRIPTS & SOUND ENGINE -->
+  <script>
+    // --- 1. Web Audio API Soft Tactile Engine ---
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+        try {
+          const saved = localStorage.getItem('lovable_sound_muted');
+          if (saved !== null) this.isMuted = (saved === 'true');
+        } catch (e) {}
+        this.updateIcons();
+      }
+
+      initCtx() {
+        if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContextClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+      }
+
+      toggle() {
+        this.isMuted = !this.isMuted;
+        try {
+          localStorage.setItem('lovable_sound_muted', String(this.isMuted));
+        } catch (e) {}
+        this.updateIcons();
+        if (!this.isMuted) {
+          setTimeout(() => this.play(1.2), 30);
+        }
+      }
+
+      updateIcons() {
+        const iconOn = document.getElementById('icon-vol-on');
+        const iconOff = document.getElementById('icon-vol-off');
+        if (iconOn && iconOff) {
+          if (this.isMuted) {
+            iconOn.classList.add('hidden');
+            iconOff.classList.remove('hidden');
+          } else {
+            iconOn.classList.remove('hidden');
+            iconOff.classList.add('hidden');
+          }
+        }
+      }
+
+      // Soft haptic tactile wood-glass click
+      play(pitch = 1.0) {
+        if (this.isMuted) return;
+        this.initCtx();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const masterGain = this.ctx.createGain();
+        masterGain.gain.setValueAtTime(0.0001, now);
+        masterGain.gain.linearRampToValueAtTime(0.03, now + 0.002);
+        masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(950 * pitch, now);
+        filter.Q.setValueAtTime(1.2, now);
+
+        const osc = this.ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(260 * pitch, now);
+        osc.frequency.exponentialRampToValueAtTime(90 * pitch, now + 0.03);
+
+        const subOsc = this.ctx.createOscillator();
+        subOsc.type = 'triangle';
+        subOsc.frequency.setValueAtTime(140 * pitch, now);
+        subOsc.frequency.exponentialRampToValueAtTime(45, now + 0.02);
+
+        const subGain = this.ctx.createGain();
+        subGain.gain.setValueAtTime(0.02, now);
+        subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.025);
+
+        osc.connect(filter);
+        subOsc.connect(subGain);
+        subGain.connect(filter);
+        filter.connect(masterGain);
+        masterGain.connect(this.ctx.destination);
+
+        osc.start(now);
+        subOsc.start(now);
+        osc.stop(now + 0.04);
+        subOsc.stop(now + 0.04);
+      }
+
+      playSuccess() {
+        if (this.isMuted) return;
+        this.initCtx();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [ { freq: 440, delay: 0 }, { freq: 587.33, delay: 0.04 } ].forEach(tone => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(1100, now + tone.delay);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(tone.freq, now + tone.delay);
+          gain.gain.setValueAtTime(0.0001, now + tone.delay);
+          gain.gain.linearRampToValueAtTime(0.025, now + tone.delay + 0.004);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + tone.delay + 0.09);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + tone.delay);
+          osc.stop(now + tone.delay + 0.1);
+        });
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    // --- 2. Mobile Menu Toggle ---
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    // --- 3. Scroll Header Effect ---
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('main-header');
+      if (header) {
+        if (window.scrollY > 20) {
+          header.classList.add('bg-[#09090b]/80', 'backdrop-blur-xl', 'border-b', 'border-white/[0.06]', 'py-3.5', 'shadow-2xl');
+          header.classList.remove('py-5');
+        } else {
+          header.classList.remove('bg-[#09090b]/80', 'backdrop-blur-xl', 'border-b', 'border-white/[0.06]', 'py-3.5', 'shadow-2xl');
+          header.classList.add('py-5');
+        }
+      }
+    }, { passive: true });
+
+    // --- 4. Bento Cursor Spotlight Effect ---
+    document.querySelectorAll('.bento-card').forEach(card => {
+      const spot = card.querySelector('.spotlight');
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        if (spot) {
+          spot.style.background = `radial-gradient(380px circle at ${x}px ${y}px, rgba(255, 255, 255, 0.05), transparent 75%)`;
+        }
+      });
+    });
+
+    // --- 5. Interactive Configurator State ---
+    const projectTypes = {
+      bot: 'Telegram-бот',
+      web: 'Веб-сайт / Лендинг',
+      miniapp: 'Telegram Mini App',
+      automation: 'Парсер / Скрипт автоматизации',
+      turnkey: 'Проект под ключ'
+    };
+
+    const moduleNames = {
+      payments: 'Приём платежей',
+      admin: 'Панель управления',
+      database: 'База данных / CRM',
+      ai: 'AI / LLM интеграция',
+      urgent: 'Срочный дедлайн'
+    };
+
+    let currentType = 'bot';
+    let activeModules = new Set(['payments', 'database']);
+
+    function setType(typeId) {
+      sound.play(1.05);
+      currentType = typeId;
+      document.querySelectorAll('.type-btn').forEach(b => {
+        b.classList.remove('bg-zinc-900', 'border-white/30', 'shadow-lg', 'ring-1', 'ring-white/20');
+        b.classList.add('bg-zinc-950/60', 'border-white/[0.06]');
+        const iconWrap = b.querySelector('div');
+        if (iconWrap) {
+          iconWrap.classList.remove('bg-white', 'text-zinc-950', 'border-white');
+          iconWrap.classList.add('bg-zinc-900', 'text-zinc-400', 'border-white/[0.08]');
+        }
+      });
+
+      const activeBtn = document.getElementById(`btn-type-${typeId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-zinc-900', 'border-white/30', 'shadow-lg', 'ring-1', 'ring-white/20');
+        activeBtn.classList.remove('bg-zinc-950/60', 'border-white/[0.06]');
+        const iconWrap = activeBtn.querySelector('div');
+        if (iconWrap) {
+          iconWrap.classList.add('bg-white', 'text-zinc-950', 'border-white');
+          iconWrap.classList.remove('bg-zinc-900', 'text-zinc-400', 'border-white/[0.08]');
+        }
+      }
+
+      updateSummary();
+    }
+
+    function toggleModule(modId) {
+      const isAdding = !activeModules.has(modId);
+      sound.play(isAdding ? 1.15 : 0.95);
+      if (isAdding) {
+        activeModules.add(modId);
+      } else {
+        activeModules.delete(modId);
+      }
+
+      const modEl = document.getElementById(`mod-${modId}`);
+      if (modEl) {
+        const box = modEl.querySelector('.mod-checkbox');
+        if (activeModules.has(modId)) {
+          modEl.classList.add('bg-zinc-900/90', 'border-white/20');
+          modEl.classList.remove('bg-zinc-950/50', 'border-white/[0.05]');
+          box.className = 'mod-checkbox w-5 h-5 rounded-md flex items-center justify-center border bg-white border-white text-zinc-950';
+          box.innerHTML = '<svg class="w-3.5 h-3.5 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+        } else {
+          modEl.classList.remove('bg-zinc-900/90', 'border-white/20');
+          modEl.classList.add('bg-zinc-950/50', 'border-white/[0.05]');
+          box.className = 'mod-checkbox w-5 h-5 rounded-md flex items-center justify-center border border-white/20 bg-zinc-900';
+          box.innerHTML = '';
+        }
+      }
+
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const typeLabel = projectTypes[currentType] || 'Цифровой продукт';
+      document.getElementById('sum-type').textContent = typeLabel;
+
+      const modsList = Array.from(activeModules).map(id => moduleNames[id]).filter(Boolean);
+      const modsEl = document.getElementById('sum-modules');
+      if (modsList.length > 0) {
+        modsEl.textContent = modsList.join(', ');
+        modsEl.className = 'text-zinc-200 leading-relaxed';
+      } else {
+        modsEl.textContent = 'Базовая комплектация без доп. модулей';
+        modsEl.className = 'text-zinc-400 italic';
+      }
+
+      const details = (document.getElementById('cfg-details').value || '').trim();
+      const detBlock = document.getElementById('sum-details-block');
+      const detText = document.getElementById('sum-details');
+      if (details) {
+        detBlock.classList.remove('hidden');
+        detText.textContent = `«${details}»`;
+      } else {
+        detBlock.classList.add('hidden');
+      }
+
+      // Generate Telegram link
+      const cleanDetails = details.replace(/[\r\n]+/g, ' ');
+      const msg = `Здравствуйте! Хочу заказать: ${typeLabel}${modsList.length ? ` (Модули: ${modsList.join(', ')})` : ''}.${cleanDetails ? ` Детали: ${cleanDetails}` : ''}`;
+      
+      const tgBtn = document.getElementById('tg-action-btn');
+      tgBtn.href = `https://t.me/AimBoGAttack?text=${encodeURIComponent(msg)}`;
+      tgBtn.dataset.message = msg;
+    }
+
+    function handleTelegramSend(e) {
+      const hp = document.getElementById('hp-token').value;
+      if (hp) {
+        e.preventDefault();
+        return;
+      }
+      sound.playSuccess();
+    }
+
+    function copyMessageTemplate() {
+      sound.playSuccess();
+      const tgBtn = document.getElementById('tg-action-btn');
+      const msg = tgBtn.dataset.message || '';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(msg);
+        const btnText = document.getElementById('copy-btn-text');
+        btnText.textContent = 'Текст скопирован в буфер!';
+        btnText.classList.add('text-emerald-400', 'font-semibold');
+        setTimeout(() => {
+          btnText.textContent = 'Скопировать шаблон сообщения';
+          btnText.classList.remove('text-emerald-400', 'font-semibold');
+        }, 2200);
+      }
+    }
+
+    function resetConfigurator() {
+      sound.play(0.9);
+      document.getElementById('cfg-details').value = '';
+      setType('bot');
+      activeModules.clear();
+      ['payments', 'admin', 'database', 'ai', 'urgent'].forEach(id => {
+        const modEl = document.getElementById(`mod-${id}`);
+        if (modEl) {
+          modEl.classList.remove('bg-zinc-900/90', 'border-white/20');
+          modEl.classList.add('bg-zinc-950/50', 'border-white/[0.05]');
+          const box = modEl.querySelector('.mod-checkbox');
+          box.className = 'mod-checkbox w-5 h-5 rounded-md flex items-center justify-center border border-white/20 bg-zinc-900';
+          box.innerHTML = '';
+        }
+      });
+      updateSummary();
+    }
+
+    // --- 6. Prompt Bar & Quick Tags Handler ---
+    function handlePromptSubmit(e) {
+      if (e) e.preventDefault();
+      sound.playSuccess();
+      const input = document.getElementById('hero-prompt-input');
+      const text = (input.value || '').trim() || 'Разработка цифрового продукта под ключ';
+      document.getElementById('cfg-details').value = text;
+      updateSummary();
+      const calc = document.getElementById('calculator');
+      if (calc) calc.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function selectQuickTag(typeId, label) {
+      sound.play(1.1);
+      document.getElementById('hero-prompt-input').value = label;
+      document.getElementById('cfg-details').value = label;
+      if (typeId && projectTypes[typeId]) {
+        setType(typeId);
+      }
+      updateSummary();
+      const calc = document.getElementById('calculator');
+      if (calc) calc.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // --- 7. Copy Phone Number ---
+    function copyPhoneNumber() {
+      sound.playSuccess();
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText('89529089836');
+        const text = document.getElementById('copy-phone-text');
+        const icon = document.getElementById('copy-phone-icon');
+        text.textContent = 'Скопировано';
+        text.classList.add('text-emerald-400');
+        icon.innerHTML = '<polyline points="20 6 9 17 4 12" stroke="#34d399" stroke-width="2.5"></polyline>';
+        setTimeout(() => {
+          text.textContent = 'Копировать';
+          text.classList.remove('text-emerald-400');
+          icon.innerHTML = '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>';
+        }, 2400);
+      }
+    }
+
+    // Initialize summary on load
+    updateSummary();
+  </script>
+</body>
+</html>
