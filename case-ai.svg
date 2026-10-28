@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320">
+  <defs>
+    <linearGradient id="b" x1="40" y1="30" x2="440" y2="290" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1B1834"/>
+      <stop offset=".6" stop-color="#101017"/>
+      <stop offset="1" stop-color="#08222B"/>
+    </linearGradient>
+    <linearGradient id="a" x1="70" y1="60" x2="420" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9B8CFF"/>
+      <stop offset="1" stop-color="#27C9DF"/>
+    </linearGradient>
+    <filter id="s" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+  <rect width="480" height="320" rx="14" fill="url(#b)"/>
+  <circle cx="380" cy="70" r="90" fill="#6255E8" opacity=".3" filter="url(#s)"/>
+  <circle cx="90" cy="270" r="80" fill="#20B8D0" opacity=".18" filter="url(#s)"/>
+  <g stroke="#858594" stroke-opacity=".16">
+    <path d="M0 90h480M0 160h480M0 230h480M90 0v320M190 0v320M290 0v320M390 0v320"/>
+  </g>
+  <g fill="none" stroke="url(#a)" stroke-width="2.6" stroke-linecap="round">
+    <path d="M50 240 L110 220 L170 232 L230 190 L290 205 L350 150 L420 168" opacity=".9"/>
+    <path d="M50 262 L110 252 L170 256 L230 236 L290 244 L350 216 L420 226" opacity=".45"/>
+  </g>
+  <g fill="url(#a)">
+    <circle cx="110" cy="220" r="5"/><circle cx="230" cy="190" r="5"/><circle cx="350" cy="150" r="5"/><circle cx="420" cy="168" r="5"/>
+  </g>
+  <g fill="#F7F7FA" opacity=".92" font-family="Arial,sans-serif" font-weight="700">
+    <text x="50" y="88" font-size="16">+38%</text>
+    <text x="50" y="110" font-size="16" fill="#858594" font-weight="400">средний ROI</text>
+  </g>
+</svg>
