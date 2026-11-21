@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NAV } from "../data";
+import { NAV, PROFILE } from "../data";
 import { cn } from "../utils/cn";
 
 export default function Navbar() {
@@ -83,10 +83,12 @@ export default function Navbar() {
             }}
             className="flex items-center gap-2.5 text-sm font-semibold tracking-tight"
           >
-            <span className="grid h-6 w-6 place-items-center rounded-lg bg-white text-[11px] font-bold text-black">
-              AV
-            </span>
-            <span className="hidden sm:inline">Алексей Волков</span>
+            <img
+              src="/avatar.jpg"
+              alt="Avatar"
+              className="h-6 w-6 rounded-full object-cover border border-white/20"
+            />
+            <span className="hidden sm:inline">{PROFILE.name}</span>
           </a>
 
           <ul className="hidden items-center gap-1 md:flex">
