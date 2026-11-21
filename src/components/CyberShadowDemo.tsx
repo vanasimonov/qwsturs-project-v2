@@ -246,6 +246,16 @@ export default function CyberShadowDemo({ onClose }: { onClose: () => void }) {
           </div>
 
           <div className="flex items-center gap-2">
+            <a
+              href="/game/"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 text-xs font-medium text-indigo-300 hover:bg-indigo-500/20 transition"
+              title="Открыть аркадный взлом в полный экран"
+            >
+              <Sparkles size={13} />
+              <span className="hidden sm:inline">Аркадный взлом</span>
+            </a>
             <button
               onClick={toggleSound}
               className={`p-2 rounded-xl border transition ${

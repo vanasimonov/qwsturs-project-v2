@@ -67,8 +67,8 @@ export const PROJECTS: Project[] = [
     metric: "500+ сценариев",
     accent: "#818cf8",
     variant: "nodes",
-    live: "https://github.com/vanasimonov",
-    code: "https://github.com/vanasimonov",
+    live: "/game/",
+    code: "https://github.com/vanasimonov/qwsturs-project-v2",
   },
   {
     id: "3d-showcase",
@@ -81,8 +81,8 @@ export const PROJECTS: Project[] = [
     metric: "60 FPS в WebGL",
     accent: "#f472b6",
     variant: "grid",
-    live: "https://github.com/vanasimonov",
-    code: "https://github.com/vanasimonov",
+    live: "/game/",
+    code: "https://github.com/vanasimonov/qwsturs-project-v2",
   },
   {
     id: "game-infra",
@@ -95,8 +95,8 @@ export const PROJECTS: Project[] = [
     metric: "−30% DPC Latency",
     accent: "#fbbf24",
     variant: "list",
-    live: "https://github.com/vanasimonov",
-    code: "https://github.com/vanasimonov",
+    live: "/game/",
+    code: "https://github.com/vanasimonov/qwsturs-project-v2",
   },
   {
     id: "sound-architecture",

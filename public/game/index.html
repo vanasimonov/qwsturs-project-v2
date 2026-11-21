@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberShadow 2099: Neon Breach</title>
+  <style>
+    :root {
+      --bg: #07070a;
+      --panel: rgba(18, 18, 26, 0.75);
+      --border: rgba(99, 102, 241, 0.25);
+      --accent: #818cf8;
+      --cyan: #22d3ee;
+      --amber: #fbbf24;
+      --emerald: #34d399;
+      --rose: #f43f5e;
+      --text: #f1f5f9;
+      --muted: #64748b;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    #matrix-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.25;
+    }
+    .hud {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 900px;
+      background: var(--panel);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 0 60px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 16px;
+    }
+    .title-box h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+    }
+    .badge {
+      font-size: 11px;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      color: var(--cyan);
+    }
+    .stats-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 13px;
+    }
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 12px;
+      border-radius: 12px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .stat-label { color: var(--muted); }
+    .stat-val { font-weight: 700; color: #fff; }
+    .timer-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .timer-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--accent));
+      transition: width 0.1s linear, background-color 0.3s;
+    }
+    .timer-bar.danger {
+      background: var(--rose);
+      box-shadow: 0 0 12px var(--rose);
+    }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+    }
+    @media (max-width: 768px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+    .section-title {
+      font-size: 11px;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .matrix-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .matrix-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 15px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.15s ease;
+    }
+    .matrix-cell.active-scope {
+      color: #fff;
+      border-color: rgba(99, 102, 241, 0.5);
+      background: rgba(99, 102, 241, 0.1);
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+    }
+    .matrix-cell.active-scope:hover {
+      background: var(--accent);
+      color: #000;
+      transform: scale(1.05);
+      box-shadow: 0 0 16px var(--accent);
+    }
+    .matrix-cell.used {
+      opacity: 0.15;
+      cursor: not-allowed;
+      border-color: transparent;
+      transform: none !important;
+    }
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .buffer-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+    .buffer-slots {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .buffer-slot {
+      flex: 1;
+      height: 38px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+    .buffer-slot.filled {
+      border-style: solid;
+      border-color: var(--cyan);
+      background: rgba(34, 211, 238, 0.1);
+    }
+    .targets-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .target-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 13px;
+      transition: all 0.3s;
+    }
+    .target-item.completed {
+      background: rgba(52, 211, 153, 0.1);
+      border-color: rgba(52, 211, 153, 0.4);
+      color: var(--emerald);
+    }
+    .seq {
+      display: flex;
+      gap: 6px;
+      letter-spacing: 0.05em;
+    }
+    .seq-code {
+      padding: 2px 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      color: #fff;
+    }
+    .target-item.completed .seq-code {
+      background: rgba(52, 211, 153, 0.2);
+      color: var(--emerald);
+    }
+    .reward {
+      color: var(--amber);
+      font-weight: 600;
+    }
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .btn {
+      flex: 1;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-primary {
+      background: #fff;
+      color: #000;
+    }
+    .btn-primary:hover {
+      background: rgba(255, 255, 255, 0.85);
+      transform: translateY(-1px);
+    }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .log-box {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix-canvas"></canvas>
+
+  <main class="hud">
+    <header class="header">
+      <div class="title-box">
+        <h1>
+          <span>⚡️ CyberShadow 2099</span>
+          <span class="badge">BREACH PROTOCOL v3.0</span>
+        </h1>
+      </div>
+      <div class="stats-row">
+        <div class="stat-pill">
+          <span class="stat-label">КРЕДИТЫ:</span>
+          <span id="credits-val" class="stat-val">0 ¤</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">УРОВЕНЬ:</span>
+          <span id="level-val" class="stat-val">1 (Arasaka Subnet)</span>
+        </div>
+        <button id="sound-btn" class="stat-pill" style="cursor: pointer;">
+          <span id="sound-icon">🔊 Звук</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="timer-bar-wrap">
+      <div id="timer-bar" class="timer-bar"></div>
+    </div>
+
+    <div class="main-grid">
+      <!-- Matrix Grid -->
+      <div>
+        <div class="section-title">
+          <span>МАТРИЦА КОДОВ (ВЫБЕРИТЕ В АКТИВНОМ РЯДУ / КОЛОНКЕ)</span>
+          <span id="axis-hint" style="color: var(--accent);">ГОРИЗОНТАЛЬ</span>
+        </div>
+        <div id="matrix" class="matrix-box"></div>
+      </div>
+
+      <!-- Side Targets and Buffer -->
+      <div class="side-panel">
+        <div class="buffer-box">
+          <div class="section-title">БУФЕР ДЕКИ (<span id="buffer-count">0</span> / <span id="buffer-max">4</span>)</div>
+          <div id="buffer-slots" class="buffer-slots"></div>
+        </div>
+
+        <div class="targets-box">
+          <div class="section-title">ПРОТОКОЛЫ ДЕМОНА ДЛЯ ЗАГРУЗКИ</div>
+          <div id="targets-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+        </div>
+
+        <div class="btn-row">
+          <button id="reset-btn" class="btn btn-ghost">Сбросить взлом</button>
+          <button id="next-level-btn" class="btn btn-primary">Следующая нода</button>
+        </div>
+
+        <div id="status-log" class="log-box">> Готов к подключению. Выберите первый шестнадцатеричный код в первой строке...</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // --- Audio Synthesizer (Web Audio API) ---
+    class SynthSound {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playNote(freq, dur = 0.08, type = 'sine', gainVal = 0.07) {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + dur);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + dur);
+        } catch(e){}
+      }
+      click() { this.playNote(900, 0.03, 'square', 0.03); }
+      match() {
+        this.playNote(523.25, 0.08, 'sine');
+        setTimeout(() => this.playNote(659.25, 0.08, 'sine'), 80);
+        setTimeout(() => this.playNote(783.99, 0.12, 'sine'), 160);
+      }
+      fail() {
+        this.playNote(200, 0.2, 'sawtooth', 0.09);
+      }
+    }
+    const audio = new SynthSound();
+
+    // --- Canvas Matrix Background ---
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const chars = '0123456789ABCDEF';
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(7, 7, 10, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#818cf8';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      requestAnimationFrame(drawMatrix);
+    }
+    drawMatrix();
+
+    // --- Game Logic ---
+    const HEX_POOL = ['1C', 'E9', '7A', 'BD', '55'];
+    const GRID_SIZE = 5;
+    let BUFFER_SIZE = 4;
+    let TIME_LIMIT = 30; // seconds
+
+    let grid = [];
+    let usedCells = new Set();
+    let isRowSelect = true; // start horizontal row 0
+    let selectedIndex = 0; // row 0 initially
+    let buffer = [];
+    let targets = [];
+    let credits = parseInt(localStorage.getItem('cyber_credits') || '0', 10);
+    let level = 1;
+    let timer = null;
+    let timeLeft = TIME_LIMIT;
+
+    const matrixEl = document.getElementById('matrix');
+    const bufferSlotsEl = document.getElementById('buffer-slots');
+    const targetsListEl = document.getElementById('targets-list');
+    const timerBarEl = document.getElementById('timer-bar');
+    const statusLogEl = document.getElementById('status-log');
+    const creditsValEl = document.getElementById('credits-val');
+    const levelValEl = document.getElementById('level-val');
+    const bufferCountEl = document.getElementById('buffer-count');
+    const bufferMaxEl = document.getElementById('buffer-max');
+    const axisHintEl = document.getElementById('axis-hint');
+
+    creditsValEl.innerText = `${credits.toLocaleString()} ¤`;
+
+    document.getElementById('sound-btn').onclick = () => {
+      audio.enabled = !audio.enabled;
+      document.getElementById('sound-icon').innerText = audio.enabled ? '🔊 Звук' : '🔇 Выкл';
+      if (audio.enabled) audio.click();
+    };
+
+    function startTimer() {
+      clearInterval(timer);
+      timeLeft = TIME_LIMIT;
+      timer = setInterval(() => {
+        timeLeft -= 0.1;
+        const pct = Math.max(0, (timeLeft / TIME_LIMIT) * 100);
+        timerBarEl.style.width = pct + '%';
+        if (pct < 30) {
+          timerBarEl.classList.add('danger');
+        } else {
+          timerBarEl.classList.remove('danger');
+        }
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          audio.fail();
+          statusLogEl.innerText = '> ВРЕМЯ ИСТЕКЛО! ICE файрвол заблокировал соединение.';
+          disableGrid();
+        }
+      }, 100);
+    }
+
+    function initLevel() {
+      grid = [];
+      usedCells.clear();
+      buffer = [];
+      isRowSelect = true;
+      selectedIndex = 0;
+      bufferMaxEl.innerText = BUFFER_SIZE;
+      bufferCountEl.innerText = '0';
+      axisHintEl.innerText = 'ГОРИЗОНТАЛЬ (СТРОКА 1)';
+
+      // Fill grid
+      for (let r = 0; r < GRID_SIZE; r++) {
+        const row = [];
+        for (let c = 0; c < GRID_SIZE; c++) {
+          row.push(HEX_POOL[Math.floor(Math.random() * HEX_POOL.length)]);
+        }
+        grid.push(row);
+      }
+
+      // Generate realistic targets from grid
+      targets = [
+        {
+          name: 'DATAMINE_V1',
+          seq: [HEX_POOL[Math.floor(Math.random() * HEX_POOL.length)], HEX_POOL[Math.floor(Math.random() * HEX_POOL.length)]],
+          reward: 450,
+          completed: false,
+        },
+        {
+          name: 'ICE_BREAKER_V2',
+          seq: [HEX_POOL[Math.floor(Math.random() * HEX_POOL.length)], HEX_POOL[Math.floor(Math.random() * HEX_POOL.length)], HEX_POOL[Math.floor(Math.random() * HEX_POOL.length)]],
+          reward: 950,
+          completed: false,
+        }
+      ];
+
+      renderGrid();
+      renderBuffer();
+      renderTargets();
+      startTimer();
+      statusLogEl.innerText = `> Нода #${level} обнаружена. Защита активна. Взломайте целевые протоколы.`;
+    }
+
+    function renderGrid() {
+      matrixEl.innerHTML = '';
+      for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+          const cell = document.createElement('div');
+          const cellId = `${r}-${c}`;
+          cell.className = 'matrix-cell';
+          cell.innerText = grid[r][c];
+          
+          if (usedCells.has(cellId)) {
+            cell.classList.add('used');
+          } else {
+            const inScope = isRowSelect ? (r === selectedIndex) : (c === selectedIndex);
+            if (inScope) {
+              cell.classList.add('active-scope');
+              cell.onclick = () => selectCell(r, c);
+            }
+          }
+          matrixEl.appendChild(cell);
+        }
+      }
+    }
+
+    function renderBuffer() {
+      bufferSlotsEl.innerHTML = '';
+      bufferCountEl.innerText = buffer.length;
+      for (let i = 0; i < BUFFER_SIZE; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'buffer-slot' + (i < buffer.length ? ' filled' : '');
+        slot.innerText = i < buffer.length ? buffer[i] : '';
+        bufferSlotsEl.appendChild(slot);
+      }
+    }
+
+    function renderTargets() {
+      targetsListEl.innerHTML = '';
+      targets.forEach(t => {
+        const item = document.createElement('div');
+        item.className = 'target-item' + (t.completed ? ' completed' : '');
+        const seqHtml = t.seq.map(c => `<span class="seq-code">${c}</span>`).join('');
+        item.innerHTML = `
+          <div>
+            <div style="font-weight: 700; margin-bottom: 4px;">${t.name}</div>
+            <div class="seq">${seqHtml}</div>
+          </div>
+          <div class="reward">+${t.reward} ¤</div>
+        `;
+        targetsListEl.appendChild(item);
+      });
+    }
+
+    function checkTargets() {
+      const bufferStr = buffer.join(',');
+      targets.forEach(t => {
+        if (!t.completed) {
+          const targetStr = t.seq.join(',');
+          if (bufferStr.includes(targetStr)) {
+            t.completed = true;
+            credits += t.reward;
+            localStorage.setItem('cyber_credits', credits);
+            creditsValEl.innerText = `${credits.toLocaleString()} ¤`;
+            audio.match();
+            statusLogEl.innerText = `> ДЕМОН ${t.name} УСПЕШНО ЗАГРУЖЕН! Получено +${t.reward} ¤`;
+          }
+        }
+      });
+      renderTargets();
+    }
+
+    function selectCell(r, c) {
+      audio.click();
+      const code = grid[r][c];
+      buffer.push(code);
+      usedCells.add(`${r}-${c}`);
+
+      checkTargets();
+      renderBuffer();
+
+      if (buffer.length >= BUFFER_SIZE) {
+        clearInterval(timer);
+        disableGrid();
+        const anyCompleted = targets.some(t => t.completed);
+        if (anyCompleted) {
+          statusLogEl.innerText = `> Буфер заполнен. Взлом завершен успешно! Нажмите "Следующая нода".`;
+        } else {
+          audio.fail();
+          statusLogEl.innerText = `> Буфер переполнен! Целевые последовательности не совпали.`;
+        }
+        return;
+      }
+
+      // Alternate row and column
+      isRowSelect = !isRowSelect;
+      selectedIndex = isRowSelect ? r : c;
+      axisHintEl.innerText = isRowSelect ? `ГОРИЗОНТАЛЬ (СТРОКА ${selectedIndex + 1})` : `ВЕРТИКАЛЬ (СТОЛБЕЦ ${selectedIndex + 1})`;
+      renderGrid();
+    }
+
+    function disableGrid() {
+      document.querySelectorAll('.matrix-cell').forEach(c => {
+        c.onclick = null;
+        c.classList.remove('active-scope');
+      });
+    }
+
+    document.getElementById('reset-btn').onclick = () => {
+      audio.click();
+      initLevel();
+    };
+
+    document.getElementById('next-level-btn').onclick = () => {
+      audio.click();
+      level++;
+      levelValEl.innerText = `${level} (Militech Node 0${level})`;
+      TIME_LIMIT = Math.max(15, 30 - level * 2);
+      if (level % 2 === 0 && BUFFER_SIZE < 6) BUFFER_SIZE++;
+      initLevel();
+    };
+
+    // Run first level
+    initLevel();
+  </script>
+</body>
+</html>
